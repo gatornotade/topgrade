@@ -75,7 +75,7 @@ impl Distribution {
             Some("fedora") => Distribution::match_fedora_variant(&variant),
             Some("nilrt") => Distribution::NILRT,
             Some("nobara") => Distribution::Nobara,
-            Some("void") => Distribution::Void,
+            Some("void") | Some("vostok") | Some("Vostok") => Distribution::Void,
             Some("debian") | Some("pureos") | Some("Deepin") | Some("linuxmint") => Distribution::Debian,
             Some("arch") | Some("manjaro-arm") | Some("garuda") | Some("artix") | Some("cachyos") => Distribution::Arch,
             Some("solus") => Distribution::Solus,
@@ -111,6 +111,8 @@ impl Distribution {
                         return Ok(Distribution::Arch);
                     } else if id_like.contains(&"alpine") {
                         return Ok(Distribution::Alpine);
+                    } else if id_like.contains(&"void") || id_like.contains(&"vostok") {
+                        return Ok(Distribution::Void);
                     } else if id_like.contains(&"fedora") {
                         return Ok(Distribution::match_fedora_variant(&variant));
                     }
@@ -1425,6 +1427,11 @@ mod tests {
     #[test]
     fn test_solus() {
         test_template(include_str!("os_release/solus"), Distribution::Solus);
+    }
+
+    #[test]
+    fn test_vostok() {
+        test_template(include_str!("os_release/vostok"), Distribution::Void);
     }
 
     #[test]
